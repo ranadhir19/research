@@ -302,6 +302,30 @@ def svg_siamese():
     inner = "\n".join(b)
     return svg_wrap(inner, 620, 230)
 
+def svg_cardio():
+    b = [SVG_DEFS]
+    b.append(box(20, 40, 140, 60, "Synthetic cohort", "n=4000 · const PH", fs=12))
+    b.append(box(200, 40, 140, 60, "Cox fit", "Newton-Raphson", fs=12))
+    b.append(arrow(160, 70, 198, 70))
+    b.append(box(380, 40, 150, 60, "Grambsch-Therneau", "p >> 0.05", fs=12, fill="#1a2b1f", stroke="#3f7a52"))
+    b.append(arrow(340, 70, 378, 70))
+    b.append(box(20, 150, 170, 70, "Horizon grid", "Uno C · tdAUC · IPA", fs=12))
+    b.append(box(230, 150, 170, 70, "Null calibration", "5 const-effect reps", fs=12, fill="#1b2340", stroke="#6ea8fe"))
+    b.append(arrow(190, 185, 228, 185))
+    b.append(arrow(90, 100, 90, 148, dashed=True))
+    b.append(f'<text x="105" y="130" fill="#98a2b8" font-size="11">landmark</text>')
+    b.append(box(440, 150, 170, 70, "Knowledge graph", "2 tensions fire", fs=12, fill="#241d10", stroke="#f0b35e"))
+    b.append(arrow(400, 185, 438, 185, dashed=True))
+    b.append(box(105, 260, 170, 60, "II screen", "all pairs < 0", fs=12))
+    b.append(box(315, 260, 130, 60, "Concat", "C=0.7408", fs=12, fill="#1a2b1f", stroke="#3f7a52"))
+    b.append(box(465, 260, 130, 60, "Gated", "C=0.7358", fs=12))
+    b.append(arrow(275, 290, 313, 290, color="#7ee2a8", marker="arrg"))
+    b.append(arrow(275, 290, 463, 290, dashed=True, color="#f08787"))
+    b.append(f'<text x="190" y="350" text-anchor="middle" fill="#7ee2a8" font-size="12">screen selects concat · gated loses by 0.0049</text>')
+    b.append(f'<text x="490" y="130" text-anchor="middle" fill="#98a2b8" font-size="11">IPA rise = artefact · C fall = real</text>')
+    inner = "\n".join(b)
+    return svg_wrap(inner, 640, 370)
+
 # ---------------------------------------------------------------------------
 # Project content (results tables filled in after experiments run)
 # ---------------------------------------------------------------------------
@@ -580,6 +604,33 @@ dict(
 experiments/siamese_experiment.py
 results/siamese/   results.md · charts.png""",
 ),
+dict(
+ slug="cardio", num="11", title="ECG Risk Durability",
+ tagline="Does ECG-derived risk survive as the prediction horizon lengthens? A null-calibrated durability protocol on synthetic survival data",
+ category="bio", paper="Preliminary investigation: forecasting cardiovascular risk from the resting ECG",
+ arch=svg_cardio, metric="IPA rise = artefact · C fall = real",
+ problem="Cardiovascular prevention works best long before symptoms, and the resting ECG is the cheapest cardiac test in existence — but almost every published ECG risk model reports a single-horizon number, which cannot distinguish forecasting (signal that persists) from detection (signal that fades).",
+ gap="The statistical apparatus built for the horizon question is nearly absent from the literature: a time-varying-coefficient test appears in 0 of 2,096 screened papers, and horizon trends are reported with no reference for what the statistic does when nothing is changing.",
+ solution="A measurement protocol, rendered here on synthetic constant-effect proportional-hazards data: Cox PH by Newton-Raphson, the Grambsch-Therneau test for time-varying coefficients, a fixed-cohort landmark horizon grid with censoring-weighted statistics (Uno concordance, time-dependent AUC, IPCW Brier/IPA), a constant-effect null simulation calibrating every trend, an interaction-information screen gating fusion investment, and a typed knowledge graph whose structural rule fires invariance-vs-trend tensions.",
+ results_table="""<table class="res"><tr><th>Measure (landmark)</th><th>Observed slope/yr</th><th>Null slope/yr</th><th>Null range</th><th>Explained by the metric?</th></tr>
+<tr><td>Incremental Uno concordance</td><td>-0.00046</td><td>+0.00170</td><td>[+0.00036, +0.00252]</td><td class="hl">no — real drift</td></tr>
+<tr><td>Incremental tdAUC</td><td>-0.00642</td><td>--</td><td>--</td><td>--</td></tr>
+<tr><td>Incremental IPA</td><td>+0.00898</td><td>+0.01104</td><td>[+0.00733, +0.01694]</td><td class="hl">YES — artefact</td></tr></table>
+<p>Synthetic cohort n=4000, seed 0; null = 5 constant-effect replicates (seeds 101-105). Grambsch-Therneau finds no time variation (all p &gt; 0.05, global p=0.416). Interaction information is negative for every modality pair (demo;ecg: -367.6, ecg1;ecg2: -552.6, demo;annot: -248.5 nats), so the screen selects concatenation: Uno C 0.7408 vs 0.7358 for a gated-fusion network. The knowledge graph fires 2 structural tensions.</p>""",
+ insights=[
+  "The rising proper score is what the statistic does when nothing is changing — the null reproduces it almost exactly, so it must not be reported as growing long-horizon value.",
+  "The falling concordance is not the instrument: the null drifts the other way. A real horizon effect the direct time-variation test cannot see is the precise open question.",
+  "Interaction information is signed, and the sign is the architectural decision — negative everywhere here predicts the gated network's loss before it is built.",
+  "A gate that does not stop the run is a comment: the synergy screen's refusal to build the fusion network is the pipeline working as designed.",
+ ],
+ impl_tree="""src/ghosh_research/cardio/
+  __init__.py      public API
+  cardio.py        Cox NR, GT test, Uno C, tdAUC, IPCW Brier/IPA, II screen,
+                   ClaimGraph, GatedPipeline, gated-fusion net
+cardio/paper/      PRELIMINARY_INVESTIGATION.html (paper, verbatim)
+experiments/cardio_experiment.py
+results/cardio/    results.md · charts.png""",
+),
 ]
 
 CATEGORIES = [
@@ -589,6 +640,8 @@ CATEGORIES = [
   "Models that survive contact with reality: regime-robust option pricing, honest biomolecular evaluation, and document-amount verification."),
  ("agents", "Agents, Memory & World Models", "#6ea8fe",
   "Foundations for agentic systems: the limits of AI knowledge generation, contractive world-model operators, the memory/plasticity trade-off, and semantic document understanding."),
+ ("bio", "Biomedical Risk Modeling", "#f08787",
+  "Measurement protocols for clinical prediction: horizon durability of risk scores, null-calibrated trend testing, and modality-redundancy screens before fusion investment."),
 ]
 
 # ---------------------------------------------------------------------------
@@ -636,12 +689,12 @@ def build_index():
     body = f"""
 <div class="hero"><div class="wrap">
 <div class="kicker">Research → Runnable Code</div>
-<h1>Ten papers, ten working applications.</h1>
+<h1>Eleven papers, eleven working applications.</h1>
 <p class="sub">Each project in this lab implements the core technical contribution of one of Ranadhir Ghosh's research papers — not a summary, not a reimplementation of someone else's code, but a faithful, runnable, measured demonstration of the paper's central idea. Every number reported was produced by running the code in this repo.</p>
 <div class="install"><code>pip install ghosh-research</code><span>then <code>from ghosh_research import cst</code> — and start experimenting</span></div>
 <div class="stats">
-<div><b>10</b><span>paper implementations</span></div>
-<div><b>10</b><span>reproduced experiments</span></div>
+<div><b>11</b><span>paper implementations</span></div>
+<div><b>11</b><span>reproduced experiments</span></div>
 <div><b>100%</b><span>numbers from real runs</span></div>
 </div>
 </div></div>

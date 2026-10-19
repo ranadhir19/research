@@ -1,6 +1,6 @@
 # User guide: ghosh-research
 
-Ten research papers, each turned into a runnable application. This guide shows how to
+Eleven research papers, each turned into a runnable application. This guide shows how to
 run, reproduce, and extend them. Everything runs on CPU with numpy, scipy and matplotlib.
 
 ## Running the demos
@@ -19,9 +19,10 @@ PYTHONPATH=src python examples/07_kpi_quickstart.py
 PYTHONPATH=src python examples/08_bukpi_quickstart.py
 PYTHONPATH=src python examples/09_memento_quickstart.py
 PYTHONPATH=src python examples/10_siamese_quickstart.py
+PYTHONPATH=src python examples/11_cardio_quickstart.py   # ECG risk durability
 ```
 
-All ten run green in under a minute each (kpi's full experiment takes ~2 minutes; its
+All eleven run green in under a minute each (kpi's full experiment takes ~2 minutes; its
 quickstart is fast).
 
 ## Reproducing the experiments
@@ -54,6 +55,7 @@ from ghosh_research.kpi import metropolis_hastings, bayes_factor  # edge validat
 from ghosh_research.bukpi import correlate                  # type-aware correlation
 from ghosh_research.memento import PrototypeBank, refit      # retention vs plasticity
 from ghosh_research.siamese import ContrastiveEncoder        # CAR/LAR verification
+from ghosh_research.cardio import fit_cox, grambsch_therneau  # ECG risk durability
 ```
 
 See each package's docstrings and `<slug>/README.md` for signatures and examples.

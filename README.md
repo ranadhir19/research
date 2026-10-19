@@ -1,10 +1,10 @@
 # ghosh-research
 
-Working applications implementing the core ideas of ten research papers by Ranadhir Ghosh.
+Working applications implementing the core ideas of eleven research papers by Ranadhir Ghosh.
 Each paper becomes a runnable, self-contained system — CPU only (numpy / scipy / matplotlib) —
 with a small experiment producing measured results and a chart.
 
-## The ten applications
+## The eleven applications
 
 | # | Package | Paper | What it does | Headline result |
 |---|---------|-------|--------------|-----------------|
@@ -18,6 +18,7 @@ with a small experiment producing measured results and a chart.
 | 08 | `ghosh_research.bukpi` | Type-Aware Bottom-Up KPI Discovery | Type-dispatching correlate() facade | All 4 branches recovered; null mean|r| = 0.034 |
 | 09 | `ghosh_research.memento` | Multi-Agent Memento | Retention/plasticity trade-off under shift | Memory 0.715 overall vs refit 0.567; refit wins late segment 0.927 |
 | 10 | `ghosh_research.siamese` | Siamese Networks for Cheque CAR/LAR Verification | Contrastive amount-vs-words matching | Embedding 0.980 vs linear 0.508 (chance) |
+| 11 | `ghosh_research.cardio` | Preliminary investigation: forecasting cardiovascular risk from the resting ECG | Null-calibrated horizon durability of ECG risk (synthetic) | IPA rise = artefact (in null range); concordance fall = real (outside null range) |
 
 All numbers are measured from actual runs (seeds recorded in `results/<slug>/results.md`).
 Each project's README cites its paper and documents deviations where a clean synthetic

@@ -13,6 +13,7 @@ as a self-contained, reproducible application:
 - bukpi:     Bottom-up type-aware KPI discovery facade
 - memento:   Continual learning — retention vs plasticity trade-off
 - siamese:   Siamese contrastive verification for cheque CAR/LAR amounts
+- cardio:    Horizon durability of ECG-derived cardiovascular risk
 """
 
 __version__ = "0.1.0"
@@ -20,4 +21,5 @@ __version__ = "0.1.0"
 __all__ = [
     "cst", "cais", "closure", "pinn", "dsai",
     "dynamo", "kpi", "bukpi", "memento", "siamese",
+    "cardio",
 ]
