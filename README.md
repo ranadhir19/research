@@ -4,6 +4,10 @@ Working applications implementing the core ideas of eleven research papers by Ra
 Each paper becomes a runnable, self-contained system — CPU only (numpy / scipy / matplotlib) —
 with a small experiment producing measured results and a chart.
 
+## Watch it built
+
+The papers behind these applications are taken apart on camera at **[The Architect's AI Workshop](https://www.youtube.com/@ArchitectsAIWorkshop)** — *first principles on the whiteboard, built live in the editor, measured honestly.* Browse the episodes: [youtube.com/@ArchitectsAIWorkshop/videos](https://www.youtube.com/@ArchitectsAIWorkshop/videos)
+
 ## The eleven applications
 
 | # | Package | Paper | What it does | Headline result |
